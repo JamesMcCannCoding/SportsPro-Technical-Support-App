@@ -15,7 +15,7 @@
 
         <label>Release Date:</label>
         <input type="text" name="release_date" />
-        <label class="message">Use 'yyyy-mm-dd' format</label><br>
+        <label class="message">Use any valid date format.</label><br>
 
         <label>&nbsp;</label>
         <input type="submit" value="Add Product" /><br>
