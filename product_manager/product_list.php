@@ -15,7 +15,8 @@
             <td><?php echo htmlspecialchars($product['productCode']); ?></td>
             <td><?php echo htmlspecialchars($product['name']); ?></td>
             <td><?php echo htmlspecialchars($product['version']); ?></td>
-            <td><?php echo htmlspecialchars($product['releaseDate']); ?></td>
+            <!-- 'j/n/Y' format used with date function because this allows for no leading zeros to be displayed when mySQL uses yyyy/mm/dd format-->
+            <td><?php echo date('j/n/Y', strtotime($product['releaseDate'])); ?></td>
             <td>
                 <form action="index.php" method="post">
                     <input type="hidden" name="action" value="delete_product">
