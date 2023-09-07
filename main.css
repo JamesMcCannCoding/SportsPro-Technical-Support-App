@@ -14,12 +14,24 @@ header {
     border-bottom: 2px solid black;
     padding: .5em 2em;
 }
+header a {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    display: inline-block;
+    transition: all 0.4s;
+}
+header a:hover {
+    transform: scale(1.1);
+}
 header h1 {
+    display:contents;
     color: black;
     margin: 0;
     padding: 0;
 }
 header p {
+    text-align: center;
     margin: 0;
     padding: .25em 0 0 0;
 }
@@ -27,7 +39,27 @@ header ul {
     margin: 0;
     padding: 1em 0 0 0;
 }
-
+nav a {
+    display: inline-block;
+    width: 22rem;
+    text-align: center;
+    border: 1px solid #072A6C;
+    background: white; 
+    padding: 0.25rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    color: blue;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.4s;
+}
+nav a:hover {
+    transform: scale(1.11);
+    background: blue;
+    color: white;
+    box-shadow: 4px 4px 3px black;
+}
 main {
     margin: 0;
     padding: .5em 2em .25em;
@@ -52,7 +84,21 @@ h1 {
 h2 {
     font-size: 120%;
     margin: 0;
-    padding: .25em 0 .25em ;
+    padding: .25rem 0 .25rem;
+}
+nav h2 {
+    display: inline-block;
+    margin-left: 8.6rem;
+    border-radius: 6px;
+    padding: 0.25rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    width: 22rem;
+    border: 1px solid #072A6C;
+    background: #072A6C; 
+    color: white;
+    text-align: center;
+    margin-bottom: 0.2rem;
 }
 h1, h2 {
     color: black;
@@ -61,7 +107,6 @@ p {
     margin: .5em 0 .5em 0;
     padding: 0;
 }
-
 ul {
     margin: 0;
     padding: 0;
@@ -76,18 +121,9 @@ nav ul {
     padding-left: 0;
 }
 nav ul li {
+    text-align-last: center;
     padding-bottom: 0.5em;
 }
-
-a {
-    color: #3333CC;
-    font-weight: bold;
-
-}
-a:hover {
-    color: #3333CC;
-}
-
 table {
     border: 1px solid #001963;
     border-collapse: collapse;
@@ -103,7 +139,6 @@ td, th {
 #no_border td {
     border: 0px;
 }
-
 form {
     margin: 0;
 }
@@ -114,7 +149,6 @@ textarea {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 80%;
 }
-
 .right {
     text-align: right;
 }
@@ -125,7 +159,6 @@ textarea {
     margin-left: .5em;
     width: 15em;
 }
-
 #aligned {
     margin: .5em 0 2em;
 }
