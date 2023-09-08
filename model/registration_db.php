@@ -1,27 +1,22 @@
 <?php
 
-function add_registration($customer_id, $product_code) {
+function add_registration($customer_id, $product_code, $registration_date) {
     global $db;
 
     // Prepare the SQL query to insert registered product into registrations into mySQL.
-    $query = "INSERT INTO registrations (customerID, productCode)
-              VALUES (:customerID, :productCode)"; 
+    $query = "INSERT INTO registrations (customerID, productCode, registrationDate)
+              VALUES (:customerID, :productCode, NOW())"; 
 
-    // Create a prepared statement
     $statement = $db->prepare($query);
-
-    // Bind values to placeholders
     $statement->bindValue(':customerID', $customer_id);
     $statement->bindValue(':productCode', $product_code);
-
-    // Execute the statement
+    $statement->bindValue(':registrationDate', $registration_date);
     $result = $statement->execute();
-
-    // Check if the registration was successful
     if ($result) {
         return true; // Registration successful
     } else {
         return false; // Registration failed
     }
 }
+
 ?>
