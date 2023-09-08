@@ -31,5 +31,9 @@
             <p>Customer information not available. Please log in first.</p>
         <?php endif; ?>
     </form>
+    <form action="customer_logout.php" method="post">
+        <input type="hidden" name="action" value="logout">
+    <input type="submit" value="Logout">
+</form>
 </main>
 <?php include '../view/footer.php'; ?>
