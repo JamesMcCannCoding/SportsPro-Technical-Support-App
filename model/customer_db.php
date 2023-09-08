@@ -63,6 +63,7 @@ function delete_customer($customer_id) {
 
 function add_customer($first_name, $last_name, $address, $city, $state, $postal_code, $country_code, $phone, $email, $password) {
     global $db;
+    $hashed_password = password_hash($password); 
     $query = 'INSERT INTO customers (firstName, lastName, address, city, state, postalCode, countryCode, phone, email, password)
               VALUES (:first_name, :last_name, :address, :city, :state, :postal_code, :country_code, :phone, :email, :password)';
     $statement = $db->prepare($query);
@@ -72,17 +73,39 @@ function add_customer($first_name, $last_name, $address, $city, $state, $postal_
     $statement->bindValue(':city', $city);
     $statement->bindValue(':state', $state);
     $statement->bindValue(':postal_code', $postal_code);
-    $statement->bindValue(':country_code', $country_code); // Bind country code
+    $statement->bindValue(':country_code', $country_code);
     $statement->bindValue(':phone', $phone);
     $statement->bindValue(':email', $email);
-    $statement->bindValue(':password', $password);
+    $statement->bindValue(':password', $hashed_password);
     if ($statement->execute()) {
-        return true; // Deletion successful
+        return true; // Registration successful
     } else {
-        return false; // Deletion failed
+        return false; // Registration failed
     }
     $statement->closeCursor();
 }
+
+function get_customer_by_email_password($email, $password) {
+    global $db;
+    $query = 'SELECT * FROM customers WHERE email = :email AND password = :password';
+    $statement = $db->prepare($query);
+    $statement->bindValue(':email', $email);
+    $statement->bindValue(':password', $password);
+    $statement->execute();
+    $customer = $statement->fetch();
+    $statement->closeCursor();
+
+    if ($customer) {
+        return $customer; // Password is correct
+    } else {
+        return false; // Password is incorrect or customer not found
+    }
+}
+
+
+
+
+
 
 function update_customer($customer_id, $first_name, $last_name, $address, $city, $state, $postal_code, $country_code, $phone, $email, $password) {
     global $db;
