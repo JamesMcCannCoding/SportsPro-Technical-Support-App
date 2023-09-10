@@ -44,7 +44,9 @@
         <label>&nbsp;</label>
         <input type="submit" value="Update Customer">
     </form>
-    <p><a href="index.php?action=search_customers">Search Customers</a></p>
-    <p><a href="index.php?action=list_customers">Back to Customer List</a></p>
+    <nav>
+        <p><a href="index.php?action=search_customers">Search Customers</a></p>
+        <p><a href="index.php?action=list_customers">Back to Customer List</a></p>
+    </nav>
 </main>
 <?php include '../view/footer.php'; ?>
