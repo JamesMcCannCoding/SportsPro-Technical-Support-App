@@ -45,6 +45,8 @@
     <?php else : ?>
         <p>No customers found.</p>
     <?php endif; ?>
-    <p><a href="index.php">Return to Customer List</a></p>
+    <nav>
+        <p><a href="index.php">Return to Customer List</a></p>
+    </nav>
 </main>
 <?php include '../view/footer.php'; ?>
