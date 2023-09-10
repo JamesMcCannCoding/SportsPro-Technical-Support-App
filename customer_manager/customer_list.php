@@ -1,7 +1,9 @@
 <?php include '../view/header.php'; ?>
 <main>
     <h2>Customer List</h2>
-    <p><a href="index.php?action=search_customers">Search Customers</a></p>
+    <nav>
+        <p><a href="index.php?action=search_customers">Search Customers</a></p>
+    </nav>
     <?php if (empty($customers)) : ?>
         <p>No customers found.</p>
     <?php else : ?>
