@@ -20,7 +20,8 @@
         <label>&nbsp;</label>
         <input type="submit" value="Add Product" /><br>
     </form>
-    <p><a href="?action=list_products">View Product List</a></p>
-
+    <nav>
+        <p><a href="?action=list_products">View Product List</a></p>
+    </nav>
 </main>
 <?php include '../view/footer.php'; ?>
