@@ -28,6 +28,8 @@
         <?php endforeach; ?>
     </table>
     <!-- Link to the Add Product page -->
-    <p><a href="index.php?action=show_add_form">Add Product</a></p>
+    <nav>
+        <p><a href="index.php?action=show_add_form">Add Product</a></p>
+    </nav>
 </main>
 <?php include '../view/footer.php'; ?>
