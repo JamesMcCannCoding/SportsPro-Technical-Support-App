@@ -19,6 +19,8 @@
 
         <input type="submit" value="Add Technician">
     </form>
-    <p><a href="?action=list_technicians">View Technician List</a></p>
+    <nav>
+        <p><a href="?action=list_technicians">View Technician List</a></p>
+    </nav>
 </main>
 <?php include '../view/footer.php'; ?>
