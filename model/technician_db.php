@@ -2,7 +2,7 @@
 
 function get_technicians() {
     global $db;
-    $query = 'SELECT CONCAT(firstName, " ", lastName) AS name, email, phone, password FROM technicians';
+    $query = 'SELECT techID, firstName, lastName, email, phone, password FROM technicians';
 
     $statement = $db->prepare($query);
     $statement->execute();
@@ -14,15 +14,17 @@ function get_technicians() {
 
 function delete_technician($technician_id) {
     global $db;
+    echo "Deleting technician with ID: $technician_id";
     $query = "DELETE FROM technicians WHERE techID = :technician_id";
     $statement = $db->prepare($query);
     $statement->bindValue(':technician_id', $technician_id);
     if ($statement->execute()) {
+        $statement->closeCursor(); // Close the statement before returning
         return true; // Deletion successful
     } else {
+        $statement->closeCursor(); // Close the statement before returning
         return false; // Deletion failed
     }
-    $statement->closeCursor();
 }
 
 function add_technician($first_name, $last_name, $email, $phone, $password) {
@@ -37,13 +39,14 @@ function add_technician($first_name, $last_name, $email, $phone, $password) {
     $statement->bindValue(':email', $email);
     $statement->bindValue(':phone', $phone);
     $statement->bindValue(':password', $password);
-    // Technician boolean result for adding
+    
     if ($statement->execute()) {
-        return true; // technician adding successful
+        $statement->closeCursor(); // Close the statement before returning
+        return true; // Technician adding successful
     } else {
+        $statement->closeCursor(); // Close the statement before returning
         return false; // Technician adding failed
     }
-    $statement->closeCursor();
 }
 
 function update_technician($technician_id, $first_name, $last_name, $email, $phone, $password) {
@@ -61,13 +64,13 @@ function update_technician($technician_id, $first_name, $last_name, $email, $pho
     $statement->bindValue(':phone', $phone);
     $statement->bindValue(':password', $password);
 
-    // Technician boolean result for updating
     if ($statement->execute()) {
+        $statement->closeCursor(); // Close the statement before returning
         return true; // Technician update successful
     } else {
+        $statement->closeCursor(); // Close the statement before returning
         return false; // Technician update failed
     }
-    $statement->closeCursor();
 }
 
 // Function to assign a technician to an incident
@@ -79,7 +82,8 @@ function assign_technician($incidentID, $techID) {
     $statement = $db->prepare($query);
     $statement->bindValue(':techID', $techID);
     $statement->bindValue(':incidentID', $incidentID);
-    $statement->execute();
+    $result = $statement->execute();  // $result will be true if update is successful
     $statement->closeCursor();
+    return $result;  // return the result of the execute() function
 }
 ?>
