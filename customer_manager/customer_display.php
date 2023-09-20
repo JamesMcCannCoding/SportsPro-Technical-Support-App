@@ -1,6 +1,6 @@
 <?php include '../view/header.php'; ?>
 <main>
-    <!-- display customer information -->
+    <!-- Retrieve and display customer information -->
     <h2>View/Update Customer</h2>
     <form action="index.php" method="post" id="aligned">
         <input type="hidden" name="action" value="update_customer">
