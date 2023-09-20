@@ -1,6 +1,8 @@
 <?php
-require('../model/database.php');
-require('../model/technician_db.php');
+//require('../model/database.php');
+//require('../model/technician_db.php');
+require('../model/database_oo.php');
+require('../model/technician_db_oo.php');
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action === NULL) {
@@ -12,26 +14,30 @@ if ($action === NULL) {
 // List Technicians:
 if ($action == 'list_technicians') {
     // Get technician data
-    $technicians = get_technicians();
+    //$technicians = get_technicians();
+    $technicianDB = new TechnicianDB();
+    $technicians = $technicianDB->getTechnicians();
+
     // Display technician list
     include('technician_list.php');
 
 // Delete technician:    
 } else if ($action == 'delete_technician') {
     $technician_id = filter_input(INPUT_POST, 'technician_id');
+    echo "Received technician ID: $technician_id";
     // Ensure $technician_id is not empty and contains a valid product code
     if (!empty($technician_id)) {
         // Call the delete_technician function
-        if (delete_technician($technician_id)) {
+        $technicianDB = new TechnicianDB();
+            if ($technicianDB->delete_technician($technician_id)) {
             // Deletion was successful, you can redirect back to the technician list page
             header("Location: index.php?action=list_technicians");
     }
 }
 // Shows the technician add form.
-} else if ($action == 'show_add_form') {
-    include('technician_add.php'); // Load the form for adding a technician
-// Technician add validation
 } else if ($action == 'add_technician') {
+    include('technician_add.php');
+} else if ($action == 'submit_technician') {
     // Get data from the form
     $first_name = filter_input(INPUT_POST, 'firstName');
     $last_name = filter_input(INPUT_POST, 'lastName');
@@ -72,7 +78,8 @@ if ($action == 'list_technicians') {
         include('technician_error.php');
     } else {
         // All validation passed, proceed with adding the technician
-        $addSuccess = add_technician($first_name, $last_name, $email, $phone, $password);
+        $technicianDB = new TechnicianDB();
+        $addSuccess = $technicianDB->add_technician($first_name, $last_name, $email, $phone, $password);
 
         if ($addSuccess) {
             // Redirect to the technician list page with a success message
