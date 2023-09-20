@@ -25,10 +25,11 @@ header a:hover {
     transform: scale(1.1);
 }
 header h1 {
-    display:contents;
+    display: inline-block;
     color: black;
     margin: 0;
     padding: 0;
+    text-align: center;
 }
 header p {
     text-align: center;
@@ -178,4 +179,35 @@ textarea {
 #aligned .message {
     margin-left: .5em;
     width: 15em;
+}
+button[type="submit"] {
+    background-color: #ff0000; 
+    color: #fff; 
+    padding: 5px 10px; 
+    border: none;
+    cursor: pointer;
+}
+button[type="submit"]:hover {
+    background-color: #ff3333;
+}
+button {
+    color: #fff;
+    padding: 8px 22px;
+    border-radius: 6px;
+    background: #7d2ae8;
+    transition: all 0.2s ease;
+}
+button:active {
+    transform: scale(0.96);
+}
+.vertical-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
