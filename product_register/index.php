@@ -1,90 +1,125 @@
 <?php
-session_start(); // Start the session
+// Start the PHP session to enable the use of session variables.
+session_start();
 
+// Uncomment these lines for error reporting in development
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
+// Include external files for database connection and functions.
 require('../model/database.php');
 require('../model/customer_db.php');
 require('../model/product_db.php');
 require('../model/registration_db.php');
 
-// Check if the user is already logged in
-if (isset($_SESSION['customer_id'])) {
-    // User is already logged in, redirect to the desired page
-    if ($_GET['action'] === 'login_customer') {
-        // Redirect to a default page
-        header('Location: ?action=register_product'); 
-        exit;
-    }
-}
-
-// Instantiate variables
-$email = '';
-$customer = null; // Initialize the customer variable
-$error_message = '';
-
+// Retrieve the action from POST request.
 $action = filter_input(INPUT_POST, 'action');
-if ($action === NULL) {
-    $action = 'show_login'; // Default action to show login form
+
+// If action is not set using POST, try to get it from GET request.
+if (empty($action)) {
+    $action = filter_input(INPUT_GET, 'action');
 }
 
-// Instantiate variables
+// If action is still not set and there's a customer ID in session, default to registering a product.
+// If not, default to showing the login form.
+if (empty($action)) {
+    if (isset($_SESSION['customer_id'])) {
+        $action = 'register_product_form';
+    } else {
+        $action = 'show_login';
+    }
+}
+
+// Initialize some variables.
 $email = '';
-$customer = null; // Initialize the customer variable
+$customer = null;
 $error_message = '';
 
-if ($action == 'show_login') {
-    include('customer_login.php'); // Display the login form
-    // Search for customer to log in
-} else if ($action == 'login_customer') {
-    // Handle customer login
-    $email = filter_input(INPUT_POST, 'email');
-    $password = filter_input(INPUT_POST, 'password');
-
-    // Check if the email exists in the database and password is correct
-    $customer = get_customer_by_email_password($email, $password);
-
-    if ($customer === false) {
-        // Email or password is incorrect, set error message and redirect to error page
-        $error_message = 'Invalid email or password.';
+// Switch statement to handle different actions.
+switch ($action) {
+    case 'show_login':
+        // Include and display the customer login page.
         include('customer_login.php');
-    } else {
-        // Store customer data in the session upon successful login
-        $_SESSION['customer_id'] = $customer['customerID'];
-        $_SESSION['email'] = $customer['email'];
-        // Add other customer data as needed
+        break;
 
-        // Email and password are correct, pass customer information to product registration
-        $action = 'register_product';
-        include('product_register.php');
-    }
+    case 'login_customer':
+        // Retrieve email and password from POST request.
+        $email = filter_input(INPUT_POST, 'email');
+        $password = filter_input(INPUT_POST, 'password');
 
+        // Validate user credentials and retrieve customer details
+        $customer = get_customer_by_email_password($email, $password);
 
-// After successful login, take the customer to register product page
-} else if ($action == 'register_product') {
-    // Handle product registration
-    $product_code = filter_input(INPUT_POST, 'productCode');
+        // If invalid credentials, show error message and login form again.
+        if ($customer === false) {
+            $error_message = 'Invalid email or password.';
+            include('customer_login.php');
+        } else {
+            // If valid, set the customer details in session and show product registration form.
+            $_SESSION['customer_id'] = $customer['customerID'];
+            $_SESSION['email'] = $customer['email'];
+            include('product_register.php');
+        }
+        break;
 
-    // Ensure that the customer is logged in
-    if (!$customer) {
-        // Redirect to the login page if the customer is not logged in
-        header('Location: ?action=show_login');
-        exit;
-    }
+    case 'register_product_form':
+        // Ensure user is logged in before showing the product registration form.
+        if (!isset($_SESSION['customer_id']) || is_null($_SESSION['customer_id'])) {
+            $error_message = 'Customer information not available. Please log in first.';
+            include('register_error.php');
+            exit;
+        } else {
+            include('product_register.php');
+            exit;
+        }
+        break;
 
-    // Add the registration to the database
-    $registration_added = add_registration($customer['customerID'], $product_code);
+    case 'register_product_submit':
+        // Retrieve product code from POST request.
+        $product_code = filter_input(INPUT_POST, 'productCode');
 
-    if ($registration_added) {
-        // Set a success message with the product code
-        header('Location: ?action=register_success&registration_added=true');
-        include ('register_success.php');
-    } else {
-        include ('register_error.php');
-        // Handle the case where product registration failed
-        // You can set an error message here if needed
-        $error_message = 'Product registration failed.';
-    }
+        // Ensure user is logged in.
+        if (!isset($_SESSION['customer_id']) || is_null($_SESSION['customer_id'])) {
+            $error_message = 'Customer information not available. Please log in first.';
+            include('register_error.php');
+            exit;
+        }
 
-    // Include the product registration form
-    include('product_register.php');
+        // Ensure product code is provided.
+        if (empty($product_code)) {
+            $error_message = 'Product code is required.';
+            include('register_error.php');
+            exit;
+        }
+        
+        // Try to register the product for the user.
+        try {
+            $registration_added = add_registration($_SESSION['customer_id'], $product_code);
+
+            // If registration successful, redirect to success page.
+            if ($registration_added) {
+                header('Location: register_success.php');
+                exit;
+            } else {
+                $error_message = 'Product registration failed.';
+                include('register_error.php');
+            }
+
+        } catch (PDOException $e) {
+            // Handle database errors.
+            if ($e->getCode() == 23000) {
+                $error_message = 'This product is already registered for this customer.';
+            } else {
+                $error_message = 'A database error occurred: ' . $e->getMessage();
+            }
+            include('register_error.php');
+        }
+        break;
+
+    default:
+        // If action is not recognised, default to showing the login form.
+        include('customer_login.php');
+        break;
 }
 ?>
