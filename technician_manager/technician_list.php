@@ -7,29 +7,31 @@
     <!-- display a table of technicians -->
     <table>
         <tr>
-            <th>Name</th> <!-- Change the header to 'Name' -->
+            <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
             <th>Password</th>
             <th>&nbsp;</th>
         </tr>
         <?php foreach ($technicians as $technician) : ?>
-            <tr>
-                <td><?php echo $technician['name']; ?></td> <!-- Display the combined name -->
-                <td><?php echo $technician['email']; ?></td>
-                <td><?php echo $technician['phone']; ?></td>
-                <td><?php echo $technician['password']; ?></td>
-                <td>
-                    <form method="post" action="?action=delete_technician">
-                        <input type="hidden" name="technician_id" value="<?php echo $technician['techID']; ?>">
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
+        <tr>
+            <td><?php echo $technician->getFullName(); ?></td>
+            <td><?php echo $technician->getEmail(); ?></td>
+            <td><?php echo $technician->getPhone(); ?></td>
+            <td><?php echo $technician->getPassword(); ?></td>
+            <td>
+                <!-- Delete technicians button -->
+                <form method="post" action="?action=delete_technician">
+                    <input type="hidden" name="technician_id" value="<?php echo $technician->getTechID(); ?>">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
         <?php endforeach; ?>
     </table>
     <nav>
-        <p><a href="?action=show_add_form">Add Technician</a></p>
+        <!-- Add technician button -->
+        <p><a href="?action=add_technician">Add Technician</a></p>
     </nav>
 </main>
 <?php include '../view/footer.php'; ?>
