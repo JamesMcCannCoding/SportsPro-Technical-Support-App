@@ -67,25 +67,5 @@ if ($action == 'get_customer') {
             include('incident_errors.php');
         }
     }
-
-
-
-
-    /*if (empty($productCode) || empty($title) || empty($description)) {
-        $error_message = 'All fields are required.';
-        include('new_incident_form.php');
-    } else {
-        // Check if the customer ID is available
-        if ($customer && isset($customer['customerID'])) {
-            // Call the function to add an incident
-            add_incident($customer['customerID'], $productCode, $title, $description);
-            $success_message = 'Incident created successfully!';
-            include('incident_success.php');
-        } else {
-            $error_message = 'Customer information is missing.';
-            // Redirect back to get_customer.php with the error message
-            include('get_customer.php');
-        }
-    }*/
 }
 ?>
