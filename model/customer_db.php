@@ -63,7 +63,7 @@ function delete_customer($customer_id) {
 
 function add_customer($first_name, $last_name, $address, $city, $state, $postal_code, $country_code, $phone, $email, $password) {
     global $db;
-    $hashed_password = password_hash($password); 
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT); 
     $query = 'INSERT INTO customers (firstName, lastName, address, city, state, postalCode, countryCode, phone, email, password)
               VALUES (:first_name, :last_name, :address, :city, :state, :postal_code, :country_code, :phone, :email, :password)';
     $statement = $db->prepare($query);
@@ -103,10 +103,6 @@ function get_customer_by_email_password($email, $password) {
 }
 
 
-
-
-
-
 function update_customer($customer_id, $first_name, $last_name, $address, $city, $state, $postal_code, $country_code, $phone, $email, $password) {
     global $db;
     $query = 'UPDATE customers
@@ -125,7 +121,8 @@ function update_customer($customer_id, $first_name, $last_name, $address, $city,
     $statement->bindValue(':country_code', $country_code); // Bind country code
     $statement->bindValue(':phone', $phone);
     $statement->bindValue(':email', $email);
-    $statement->bindValue(':password', $password);
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT); 
+    $statement->bindValue(':password', $hashed_password);
     if ($statement->execute()) {
         return true; // Deletion successful
     } else {
@@ -163,5 +160,4 @@ function get_countries($customerCountryCode) {
 
     return $options;
 }
-
 ?>
