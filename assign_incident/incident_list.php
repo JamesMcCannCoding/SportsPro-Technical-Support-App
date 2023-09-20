@@ -1,7 +1,7 @@
 <?php include '../view/header.php'; ?>
 <main>
     <h1>Assign incident</h1>
-    <!-- display the table of currently open incidents -->
+    <!-- Display the table of currently open incidents -->
     <table>
         <tr>
             <th>ID</th>
