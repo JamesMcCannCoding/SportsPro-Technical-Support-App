@@ -41,19 +41,22 @@ if ($action == 'list_products') {
 
     // Create a new array to store error messages:
     $errors = array();
-    
+
     // Validate product code:
     if (empty($code)) {
         $errors['code'] = 'Product code is required.';
     }
+
     // Validate product name:
     if (empty($name)) {
         $errors['name'] = 'Product name is required';
     }
+
     // Validate version:
     if (empty($version)) {
         $errors['version'] = 'Product version is required.';
     }
+
      // Validate release date:
      if (empty($release_date)) {
         $errors['release_date'] = 'Product release date is required.';
