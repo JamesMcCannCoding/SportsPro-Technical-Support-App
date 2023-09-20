@@ -1,4 +1,6 @@
 <?php
+
+// Get products function.
 function get_products() {
     global $db;
     $query = 'SELECT * FROM products
@@ -10,6 +12,7 @@ function get_products() {
     return $products;
 }
 
+// Get products by customer email function.
 function get_products_by_customer($email) {
     global $db;
     $query = 'SELECT products.productCode, products.name 
@@ -25,6 +28,7 @@ function get_products_by_customer($email) {
     return $products;
 }
 
+// Get products by product code function.
 function get_product($product_code) {
     global $db;
     $query = 'SELECT * FROM products
@@ -37,6 +41,7 @@ function get_product($product_code) {
     return $product;
 }
 
+// Delete products function.
 function delete_product($product_code) {
     global $db;
     $query = 'DELETE FROM products
@@ -51,16 +56,15 @@ function delete_product($product_code) {
     $statement->closeCursor();
 }
 
+// Add products function.
 function add_product($code, $name, $version, $release_date) {
     global $db;
-    
-    // Check if the product code already exists
+    // Check if the product code already exists.
     $existing_product = get_product($code);
     if ($existing_product) {
-        // Product code already exists, return false
+        // Product code already exists, return false.
         return false;
     }
-    
     $query = 'INSERT INTO products
                  (productCode, name, version, releaseDate)
               VALUES
@@ -70,17 +74,16 @@ function add_product($code, $name, $version, $release_date) {
     $statement->bindValue(':name', $name);
     $statement->bindValue(':version', $version);
     $statement->bindValue(':release_date', $release_date);
-    
-    // Product boolean result for adding
+    // Product boolean result for adding.
     if ($statement->execute()) {
-        return true; // Product added successfully
+        return true; // Product added successfully.
     } else {
-        return false; // Product adding failed
+        return false; // Product adding failed.
     }
     $statement->closeCursor();
 }
 
-
+// Update products function.
 function update_product($code, $name, $version, $release_date) {
     global $db;
     $query = 'UPDATE products
