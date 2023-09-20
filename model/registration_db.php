@@ -1,22 +1,19 @@
 <?php
 
-function add_registration($customer_id, $product_code, $registration_date) {
+function add_registration($customer_id, $product_code) {
     global $db;
+    $date = date('Y-m-d H:i:s');  // This gets the current date and time
 
-    // Prepare the SQL query to insert registered product into registrations into mySQL.
-    $query = "INSERT INTO registrations (customerID, productCode, registrationDate)
-              VALUES (:customerID, :productCode, NOW())"; 
-
+    $query = 'INSERT INTO registrations (customerID, productCode, registrationDate)
+              VALUES (:customer_id, :product_code, :date)';
     $statement = $db->prepare($query);
-    $statement->bindValue(':customerID', $customer_id);
-    $statement->bindValue(':productCode', $product_code);
-    $statement->bindValue(':registrationDate', $registration_date);
+    $statement->bindValue(':customer_id', $customer_id);
+    $statement->bindValue(':product_code', $product_code);
+    $statement->bindValue(':date', $date);
+    
     $result = $statement->execute();
-    if ($result) {
-        return true; // Registration successful
-    } else {
-        return false; // Registration failed
-    }
-}
+    $statement->closeCursor();
 
+    return $result;  // This will return true if the insert was successful, and false otherwise.
+}
 ?>
