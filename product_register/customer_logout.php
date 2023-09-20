@@ -1,11 +1,14 @@
 <?php
-session_start(); // Start the session
+if(session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+?>
 
-if (isset($_POST['action']) && $_POST['action'] === 'logout') {
+<?php if (isset($_POST['action']) && $_POST['action'] === 'logout') {
     // User clicked the "Logout" button, log them out
     session_destroy();
-    header('Location: ?action=show_login'); // Redirect to the login page or another page
+    $_SESSION = array();
+    header('Location: index.php?action=show_login');
     exit;
 }
-
 ?>
